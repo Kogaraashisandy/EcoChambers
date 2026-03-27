@@ -7,6 +7,7 @@ import Comparar from "./components/Comparar";
 import Prediccion from "./components/Prediccion";
 import Insights from "./components/Insights";
 import Climatico from "./components/Climatico";
+import FloatingMenu from './components/FloatingMenu'
 
 // ── Secciones para el scroll spy ─────────────────────────────────────────────
 const SECCIONES = [
@@ -288,6 +289,7 @@ export default function App() {
         <Prediccion refProp={prediccionRef} />
 
         <Insights insights={insights} porDepto={porDepto} />
+
       </main>
 
       {/* Footer */}
@@ -310,7 +312,10 @@ export default function App() {
           Datos: SIEL / MinEnergía · Modelo: Prophet (Meta) · Stack: FastAPI +
           React
         </p>
+
       </footer>
+
     </>
+
   );
 }

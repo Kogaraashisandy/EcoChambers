@@ -63,12 +63,18 @@ def predecir_especifico(departamento: str, tecnologia: str, meses: int):
     df = cargar_y_limpiar()
     subset = (
         df[(df["departamento"] == departamento) & (df["tecnología"] == tecnologia)]
-        .groupby("mes")["producción_mwh"].sum()
+        .groupby("mes")["producción_mwh"]
+        .sum()
         .reset_index()
         .rename(columns={"mes": "ds", "producción_mwh": "y"})
     )
-    if len(subset) < 4:
+
+    # ← Bajar umbral a 2 y rellenar si faltan meses
+    if len(subset) < 2:
         return {"error": "datos insuficientes"}
+
+    # Rellenar meses faltantes con interpolación para que Prophet tenga serie continua
+    subset = subset.set_index("ds").resample("MS").mean().interpolate(method="linear").reset_index()
 
     model = Prophet(
         yearly_seasonality=False,
@@ -80,14 +86,16 @@ def predecir_especifico(departamento: str, tecnologia: str, meses: int):
     model.fit(subset)
     future   = model.make_future_dataframe(periods=meses, freq="MS")
     forecast = model.predict(future)
-    if meses is None:
-        meses = meses_hasta_fin_2026(subset["ds"].max())
+
     historico = subset.copy()
     historico["ds"] = historico["ds"].dt.strftime("%Y-%m")
 
     pred = forecast[["ds","yhat","yhat_lower","yhat_upper"]].copy()
     pred["ds"] = pd.to_datetime(pred["ds"]).dt.strftime("%Y-%m")
-    pred = pred.rename(columns={"ds":"fecha","yhat":"prediccion","yhat_lower":"min","yhat_upper":"max"})
+    pred = pred.rename(columns={
+        "ds":"fecha","yhat":"prediccion",
+        "yhat_lower":"min","yhat_upper":"max"
+    })
 
     return {
         "departamento": departamento,

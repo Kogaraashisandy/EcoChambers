@@ -173,6 +173,22 @@ function CustomTooltip({ active, payload, label }) {
 }
 // ── Gráfica de resultado ──────────────────────────────────────────────────────
 function GraficaPrediccion({ resultado, tecnologia }) {
+  if (!resultado?.historico || !resultado?.prediccion) {
+    return (
+      <div style={{
+        textAlign: 'center', padding: '40px 20px',
+        color: 'var(--text-muted)', fontSize: '0.9rem',
+      }}>
+        <p style={{ fontSize: '1.5rem', marginBottom: 12 }}>⚠</p>
+        <p>No hay suficientes datos históricos para generar una predicción</p>
+        <p style={{ fontSize: '0.8rem', marginTop: 8 }}>
+          Esta combinación de departamento y tecnología tiene muy pocos registros.
+        </p>
+      </div>
+    )
+  }
+
+  
   const color = tecnologia === "Solar" ? "#f59e0b" : "#3b82f6";
 
   // Combinar histórico + predicción en un solo array

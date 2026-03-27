@@ -8,6 +8,7 @@ import Prediccion from "./components/Prediccion";
 import Insights from "./components/Insights";
 import Climatico from "./components/Climatico";
 import FloatingMenu from './components/FloatingMenu'
+import DashboardPowerBI from "./components/DashboardPowerBI";
 
 // ── Secciones para el scroll spy ─────────────────────────────────────────────
 const SECCIONES = [
@@ -289,7 +290,7 @@ export default function App() {
         <Prediccion refProp={prediccionRef} />
 
         <Insights insights={insights} porDepto={porDepto} />
-
+        <DashboardPowerBI></DashboardPowerBI>
       </main>
 
       {/* Footer */}
@@ -314,6 +315,7 @@ export default function App() {
         </p>
 
       </footer>
+      <FloatingMenu />
 
     </>
 

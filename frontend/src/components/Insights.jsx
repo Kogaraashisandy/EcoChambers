@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import MapaRegion from "./MapaRegion";
 // ── Íconos SVG ────────────────────────────────────────────────────────────────
 function IconTrendUp() {
   return (
@@ -824,19 +823,7 @@ export default function Insights({ insights, porDepto }) {
           <DiversificacionChart porDepto={porDepto} />
 
           {/* Fila 3: mapa + recomendación */}
-          <div className="grid-2">
-            <MapaRegion
-              potencial={potencial_por_departamento}
-              onDeptoClick={() => {
-                document
-                  .getElementById("comparar")
-                  ?.scrollIntoView({ behavior: "smooth" });
-              }}
-            />
-            <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-              <TarjetaRecomendacion recomendacion={recomendacion_inversion} />
-            </div>
-          </div>
+          <TarjetaRecomendacion recomendacion={recomendacion_inversion} />
         </div>
       </div>
     </section>
